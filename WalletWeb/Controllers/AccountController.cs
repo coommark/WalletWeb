@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -34,7 +35,6 @@ namespace WalletWeb.Controllers
             if (ModelState.IsValid)
             {
                 var result = string.Empty;
-
                 string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
                 string authEndPoint = _configuration.GetValue<string>("Api:Auth");
 
@@ -44,21 +44,47 @@ namespace WalletWeb.Controllers
                     new KeyValuePair<string, string>("username", model.Email),
                     new KeyValuePair<string, string>("password", model.Password),
                 });
-                using (var client = new HttpClient())
+                try
                 {
-                    client.DefaultRequestHeaders.Clear();
-                    client.BaseAddress = new Uri(apiBaseUrl);
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    var response = await client.PostAsync(authEndPoint, formContent);
-                    if(response.IsSuccessStatusCode)
+                    using (var client = new HttpClient())
                     {
-                        var resultMessage = response.Content.ReadAsStringAsync().Result;
-                        result = resultMessage;
-                        JwtViewModel jwt = JsonConvert.DeserializeObject<JwtViewModel>(resultMessage);
-                        HttpContext.Session.SetString("Token", jwt.access_token);
-                    }
-                };
-                return Content(result);                
+                        client.DefaultRequestHeaders.Clear();
+                        client.BaseAddress = new Uri(apiBaseUrl);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        var response = await client.PostAsync(authEndPoint, formContent);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var resultMessage = response.Content.ReadAsStringAsync().Result;
+                            result = resultMessage;
+                            JwtViewModel jwt = JsonConvert.DeserializeObject<JwtViewModel>(resultMessage);
+                            HttpContext.Session.SetString("Token", jwt.access_token);
+                            int statusCode = (int)response.StatusCode;
+                            var handler = new JwtSecurityTokenHandler();
+                            var token = handler.ReadJwtToken(jwt.access_token);
+                            var role = token.Claims.First(claim => claim.Type == "role").Value;
+                            if (role == "Administrator")
+                            {
+                                return RedirectToAction("Index", "Home", new { area = "Admin" });
+                            }
+                            else
+                            {
+                                return RedirectToAction("Index", "Home");
+                            }
+                        }
+                        else if(!response.IsSuccessStatusCode)
+                        {
+                            if((int)response.StatusCode == 400)
+                            {
+                                ModelState.AddModelError(string.Empty, "The email or password you entered is incorrect.");
+                                return View(model);
+                            }
+                        };
+                    };
+                }
+                catch (Exception e)
+                {
+                    return View("~/Views/Shared/Error408.cshtml");
+                }
             }
             return View(model);
         }
