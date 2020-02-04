@@ -5,10 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using WalletWeb.Filters;
 using WalletWeb.Models;
 
 namespace WalletWeb.Controllers
 {
+    [SessionAuthenticate]
     public class HomeController : Controller
     {
         private readonly IConfiguration _configuration;

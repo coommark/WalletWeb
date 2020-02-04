@@ -89,30 +89,59 @@ namespace WalletWeb.Controllers
             return View(model);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Accounts()
+        public ActionResult Register()
         {
-            var result = string.Empty;
+            return View();
+        }
 
-            string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
-            string accountTypesEndPoint = _configuration.GetValue<string>("Api:AccountTypes");
-
-            var session = HttpContext.Session.GetString("Token");
-
-            using(var client = new HttpClient())
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                client.DefaultRequestHeaders.Clear();
-                client.BaseAddress = new Uri(apiBaseUrl);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
-                var response = await client.GetAsync(accountTypesEndPoint);
-                if (response.IsSuccessStatusCode)
+                var result = string.Empty;
+                string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
+                string regEndPoint = _configuration.GetValue<string>("Api:Register");                
+                try
                 {
-                    var resultMessage = response.Content.ReadAsStringAsync().Result;
-                    result = resultMessage;
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Clear();
+                        client.BaseAddress = new Uri(apiBaseUrl);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                        var json = JsonConvert.SerializeObject(model);
+                        var data = new StringContent(json, Encoding.UTF8, "application/json");
+     
+                        var response = await client.PostAsync(regEndPoint, data);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var resultMessage = response.Content.ReadAsStringAsync().Result;
+                            result = resultMessage;
+                            return RedirectToAction("Login", "Account");                            
+                        }
+                        else if (!response.IsSuccessStatusCode)
+                        {
+                            
+                            var res = response.Content.ReadAsStringAsync().Result;
+                            IEnumerable<ApiErrorViewModel> errors = JsonConvert.DeserializeObject<IEnumerable<ApiErrorViewModel>>(res);
+                            foreach(var error in errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.description);
+                            }                            
+                            return View(model);
+                            
+
+                        };
+                    };
+                }
+                catch (Exception e)
+                {
+                    return View("~/Views/Shared/Error408.cshtml");
                 }
             }
-            return Content(result);
+            return View(model);
         }
     }
 }

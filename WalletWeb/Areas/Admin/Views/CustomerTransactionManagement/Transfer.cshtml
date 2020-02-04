@@ -1,0 +1,58 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Transfer";
+}
+
+<div class="main-content">
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">Transfer funds to Customer</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="search" class="form-inline mb-4">
+                        <input name="account" id="account" class="form-control" placeholder="Search" />
+                        <button id="searcuser" class="ml-3 btn btn-primary">
+                            Search
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="destination">
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#searcuser").click(function (e) {
+                e.preventDefault();
+                console.log("CLicked")
+                var form = $('#search')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: '@Url.Action("GetAccount", "CustomerAccountsManagement")',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    type: 'post'
+                }).done(function (result) {
+                    $('#destination').html(result);
+                })
+           }); 
+        });
+    </script>
+}

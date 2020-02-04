@@ -1,0 +1,87 @@
+﻿@using WalletWeb.Models.ViewModels
+@{
+    ViewData["Title"] = "Transfer";
+}
+
+<div class="main-content">
+    <div class="row">
+        @if (ViewBag.Current != null)
+        {
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                    <div class="card-body text-center">
+                        <i class="i-Financial"></i>
+                        <div class="content2">
+                            <p class="text-muted mt-2 mb-0"><strong>@((ViewBag.Current as CustomerAccountViewModel).AccountNumber)</strong> (Current Account)</p>
+                            <p class="text-primary text-24 line-height-1 mb-2"> @string.Format("{0:n}", ((ViewBag.Current as CustomerAccountViewModel).Balance))</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (ViewBag.Savings != null)
+        {
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                    <div class="card-body text-center">
+                        <i class="i-Money-2"></i>
+                        <div class="content2">
+                            <p class="text-muted mt-2 mb-0"><strong>@((ViewBag.Savings as CustomerAccountViewModel).AccountNumber)</strong> (Saving Account)</p>
+                            <p class="text-primary text-24 line-height-1 mb-2">@string.Format("{0:n}", ((ViewBag.Savings as CustomerAccountViewModel).Balance))</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">Transfer to beneficiary</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form id="search" class="form-inline mb-4">
+                        <input name="account" id="account" class="form-control" placeholder="Search" />
+                        <button id="searcuser" class="ml-3 btn btn-primary">
+                            Search
+                        </button>
+                    </form>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="destination">
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(document).ready(function () {
+            $("#searcuser").click(function (e) {
+                e.preventDefault();
+                console.log("CLicked")
+                var form = $('#search')[0];
+                var formData = new FormData(form);
+                $.ajax({
+                    url: '@Url.Action("GetAccount", "AccountTransactions")',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    type: 'post'
+                }).done(function (result) {
+                    $('#destination').html(result);
+                })
+           }); 
+        });
+    </script>
+}

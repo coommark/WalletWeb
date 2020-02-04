@@ -1,0 +1,77 @@
+﻿
+@model WalletWeb.Models.ViewModels.AccountTypeViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-content">
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">Account Category Details</h5>
+                            </div>
+                        </div>
+                        <div class="text-right col-md-6">
+                            <a href="@Url.Action("Create", "AccountTypesManagement")" class="btn btn-outline-primary" type="button">Add New</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.Type):</strong> </label>
+                                    <div class="col-sm-9 pt-2">
+                                        @Html.DisplayFor(x => x.Type)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.Description):</strong></label>
+                                    <div class="col-sm-9 pt-2">
+                                        @Html.DisplayFor(x => x.Description)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.CategoryCode):</strong></label>
+                                    <div class="col-sm-9 pt-2">
+                                        @Html.DisplayFor(x => x.CategoryCode)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.AllowOverdraw):</strong></label>
+                                    <div class="col-sm-9 pt-2">
+                                        @if (Model.AllowOverdraw)
+                                        {
+                                            <span class="badge badge-primary">Yes</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-info">No</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<WalletWeb.Models.ViewModels.ApiErrorViewModel>
+@{
+    Layout = "~/Views/Shared/_ErrorLayout.cshtml";
+    ViewData["Title"] = "400";
+}
+
+<div class="not-found-wrap text-center">
+    <h1 class="text-36">Transaction Error</h1>
+    <p class="text-18 mb-3">The following errors occured while attempting to perform transaction:</p>
+    @foreach (var item in Model)
+    {
+        <p class="mb-5 text-danger text-14"><i class="nav-icon i-Close-Window font-weight-bold mr-2"></i> @item.description</p>
+    }
+
+    <a class="btn btn-lg btn-primary" href="javascript: history.go(-1)">Try Again</a>
+</div>

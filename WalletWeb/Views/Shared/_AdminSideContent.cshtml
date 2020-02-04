@@ -1,47 +1,49 @@
 ﻿<div class="side-content-wrap">
     <div class="sidebar-left open rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
         <ul class="navigation-left">
-            <li class="nav-item" data-item="dashboard">
-                <a class="nav-item-hold" href="#"><i class="nav-icon i-Bar-Chart"></i><span class="nav-text">Dashboard</span></a>
+            <li class="nav-item">
+                <a class="nav-item-hold" asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="nav-icon i-Bar-Chart"></i><span class="nav-text">Dashboard</span></a>
+                <div class="triangle"></div>
+            </li>            
+            <li class="nav-item" data-item="accounts">
+                <a class="nav-item-hold" href="#"><i class="nav-icon i-Computer-Secure"></i><span class="nav-text">Accounts</span></a>
                 <div class="triangle"></div>
             </li>
-            
-            <li class="nav-item" data-item="apps">
-                <a class="nav-item-hold" href="#"><i class="nav-icon i-Computer-Secure"></i><span class="nav-text">Apps</span></a>
+            <li class="nav-item" data-item="transactions">
+                <a class="nav-item-hold" href="#"><i class="nav-icon i-Dollar-Sign-2"></i><span class="nav-text">Transactions</span></a>
                 <div class="triangle"></div>
             </li>
-           
-            <li class="nav-item" data-item="forms">
-                <a class="nav-item-hold" href="#"><i class="nav-icon i-File-Clipboard-File--Text"></i><span class="nav-text">Forms</span></a>
+            <li class="nav-item" data-item="users">
+                <a class="nav-item-hold" href="#"><i class="nav-icon i-MaleFemale"></i><span class="nav-text">Users</span></a>
                 <div class="triangle"></div>
             </li>
-           
+            <li class="nav-item" data-item="settings">
+                <a class="nav-item-hold" href="#"><i class="nav-icon i-Gear"></i><span class="nav-text">Settings</span></a>
+                <div class="triangle"></div>
+            </li>
         </ul>
     </div>
     <div class="sidebar-left-secondary rtl-ps-none" data-perfect-scrollbar="" data-suppress-scroll-x="true">
         <!-- Submenu Dashboards-->
-        <ul class="childNav" data-parent="dashboard">
-            <li class="nav-item"><a href="dashboard1.html"><i class="nav-icon i-Clock-3"></i><span class="item-name">Version 1</span></a></li>
-            <li class="nav-item"><a href="dashboard2.html"><i class="nav-icon i-Clock-4"></i><span class="item-name">Version 2</span></a></li>
-            <li class="nav-item"><a href="dashboard3.html"><i class="nav-icon i-Over-Time"></i><span class="item-name">Version 3</span></a></li>
-            <li class="nav-item"><a href="dashboard4.html"><i class="nav-icon i-Clock"></i><span class="item-name">Version 4</span></a></li>
+        <ul class="childNav" data-parent="accounts">
+            <li class="nav-item"><a asp-area="Admin" asp-controller="CustomerAccountsManagement" asp-action="Create"><i class="nav-icon i-Lock"></i><span class="item-name">Create Account</span></a></li>
+            <li class="nav-item"><a asp-area="Admin" asp-controller="CustomerAccountsManagement" asp-action="Index"><i class="nav-icon i-ID-2"></i><span class="item-name">All Accounts</span></a></li>
         </ul>
-        <ul class="childNav" data-parent="forms">
+        <ul class="childNav" data-parent="transactions">
+            <li class="nav-item"><a href="form.basic.html"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">Basic Elements</span></a></li>
+            <li class="nav-item"><a href="form.input.group.html"><i class="nav-icon i-Receipt-4"></i><span class="item-name">Input Groups</span></a></li>
+        </ul>
+        <ul class="childNav" data-parent="users">
             <li class="nav-item"><a href="form.basic.html"><i class="nav-icon i-File-Clipboard-Text--Image"></i><span class="item-name">Basic Elements</span></a></li>
             <li class="nav-item"><a href="form.layouts.html"><i class="nav-icon i-Split-Vertical"></i><span class="item-name">Form Layouts</span></a></li>
             <li class="nav-item"><a href="form.input.group.html"><i class="nav-icon i-Receipt-4"></i><span class="item-name">Input Groups</span></a></li>
-            <li class="nav-item"><a href="form.validation.html"><i class="nav-icon i-Close-Window"></i><span class="item-name">Form Validation</span></a></li>
-            <li class="nav-item"><a href="smart.wizard.html"><i class="nav-icon i-Width-Window"></i><span class="item-name">Smart Wizard</span></a></li>
-            <li class="nav-item"><a href="tag.input.html"><i class="nav-icon i-Tag-2"></i><span class="item-name">Tag Input</span></a></li>
-            <li class="nav-item"><a href="editor.html"><i class="nav-icon i-Pen-2"></i><span class="item-name">Rich Editor</span></a></li>
         </ul>
-        <ul class="childNav" data-parent="apps">
-            <li class="nav-item"><a href="invoice.html"><i class="nav-icon i-Add-File"></i><span class="item-name">Invoice</span></a></li>
-            <li class="nav-item"><a href="inbox.html"><i class="nav-icon i-Email"></i><span class="item-name">Inbox</span></a></li>
-            <li class="nav-item"><a href="chat.html"><i class="nav-icon i-Speach-Bubble-3"></i><span class="item-name">Chat</span></a></li>
-        </ul>       
-        
-        
+
+        <ul class="childNav" data-parent="settings">
+            <li class="nav-item"><a asp-area="Admin" asp-controller="AccountTypesManagement" asp-action="Index"><i class="nav-icon i-Receipt-4"></i><span class="item-name">Account Types</span></a></li>
+            <li class="nav-item"><a href="form.input.group.html"><i class="nav-icon i-Receipt-4"></i><span class="item-name">Input Groups</span></a></li>
+        </ul>
+
     </div>
     <div class="sidebar-overlay"></div>
 </div>

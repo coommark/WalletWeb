@@ -4,8 +4,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReflectionIT.Mvc.Paging;
+using WalletWeb.Sessions;
 
 namespace WalletWeb
 {
@@ -23,12 +26,20 @@ namespace WalletWeb
         {
             services.AddDistributedMemoryCache();
             services.AddSession(options =>
-           {
-               options.IdleTimeout = TimeSpan.FromMinutes(10);
-               options.Cookie.HttpOnly = true;
-               options.Cookie.IsEssential = true;
-           });
-            services.AddMvc();
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            //services.AddTransient<ISessionManager, SessionManager>();
+            services.AddMvc()
+                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+                .AddSessionStateTempDataProvider(); 
+            services.AddPaging(options => {
+                options.ViewName = "Bootstrap4";
+                options.HtmlIndicatorDown = " <span>&darr;</span>";
+                options.HtmlIndicatorUp = " <span>&uarr;</span>";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +57,7 @@ namespace WalletWeb
 
             app.UseStaticFiles();
             app.UseSession();
+            //app.UseMiddleware<AuthMiddleware>();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
