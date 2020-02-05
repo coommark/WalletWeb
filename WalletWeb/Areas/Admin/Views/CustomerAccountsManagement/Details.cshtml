@@ -1,5 +1,5 @@
 ﻿
-@model WalletWeb.Models.ViewModels.AccountTypeViewModel
+@model WalletWeb.Models.ViewModels.CustomerAccountViewModel
 
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
@@ -14,11 +14,11 @@
                     <div class="row" style="align-items: center;">
                         <div class="col-md-6">
                             <div class="ul-card-widget__head-label">
-                                <h5 class="text-18 font-weight-700 card-title">Account Category Details</h5>
+                                <h5 class="text-18 font-weight-700 card-title">Account Details</h5>
                             </div>
                         </div>
                         <div class="text-right col-md-6">
-                            <a href="@Url.Action("Create", "AccountTypesManagement")" class="btn btn-outline-primary" type="button">Add New</a>
+                            <a href="@Url.Action("Create", "CustomerAccountsManagement")" class="btn btn-outline-primary" type="button">Create New</a>
                         </div>
                     </div>
                 </div>
@@ -27,49 +27,71 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.Type):</strong> </label>
-                                    <div class="col-sm-9 pt-2">
-                                        @Html.DisplayFor(x => x.Type)
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.ApplicationUser.FullName):</strong> </label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.ApplicationUser.FullName)
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.Description):</strong></label>
-                                    <div class="col-sm-9 pt-2">
-                                        @Html.DisplayFor(x => x.Description)
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.AccountNumber):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.AccountNumber)
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.CategoryCode):</strong></label>
-                                    <div class="col-sm-9 pt-2">
-                                        @Html.DisplayFor(x => x.CategoryCode)
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.Balance):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @string.Format("{0:n}", Model.Balance)
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label"><strong>@Html.DisplayNameFor(x => x.AllowOverdraw):</strong></label>
-                                    <div class="col-sm-9 pt-2">
-                                        @if (Model.AllowOverdraw)
-                                        {
-                                            <span class="badge badge-primary">Yes</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-info">No</span>
-                                        }
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.AccountStatus.Status):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.AccountStatus.Status)
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.DailyTransactionLimit):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @string.Format("{0:n}", Model.DailyTransactionLimit)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.Created):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.Created)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                        
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="card-title">Actions</div>
+                    <a asp-controller="AccountStatusManagement" asp-action="SetStatus" asp-route-accountId="@Model.Id" class="btn btn-danger m-1" type="button">
+                        Change Account Status
+                    </a>
+                    <a asp-controller="CustomerAccountsManagement" asp-action="SetDailyLimit" asp-route-accountId="@Model.Id" class="btn btn-warning m-1" type="button">
+                        Set Daily Limit
+                    </a>
                 </div>
             </div>
         </div>

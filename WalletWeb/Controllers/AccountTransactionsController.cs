@@ -22,8 +22,6 @@ namespace WalletWeb.Controllers
     public class AccountTransactionsController : Controller
     {
         private readonly IConfiguration _configuration;
-        int pageSize = 4;
-        int totalCount = 0;
 
         public AccountTransactionsController(IConfiguration configuration)
         {
@@ -78,7 +76,6 @@ namespace WalletWeb.Controllers
             return View();
         }
 
-
         [HttpPost]
         public async Task<ActionResult> GetAccount(string account)
         {
@@ -107,11 +104,12 @@ namespace WalletWeb.Controllers
             CustomerAccountViewModel toReturn = JsonConvert.DeserializeObject<CustomerAccountViewModel>(result);
             var transaction = new CustomerTransactionCreateViewModel
             {
-                CustomerId = toReturn.Id,
+                CustomerId = toReturn.ApplicationUser.Id,
                 TransactionType = "Transfer",
                 AccountNumber = toReturn.AccountNumber,
                 FullName = toReturn.ApplicationUser.FullName,
-                Flow = "Destination"
+                Flow = "Destination",
+                DestinationAccount = toReturn.AccountNumber,
             };
             return PartialView("~/Views/Shared/CustDestinationAccount.cshtml", transaction);
         }
@@ -159,7 +157,6 @@ namespace WalletWeb.Controllers
                                     description = error.Value.ToString().Replace("[", "").Replace("]", "").Replace("\"", "")
                                 };
                                 errorList.Add(apiError);
-                                //ModelState.AddModelError(string.Empty, error.Value.ToString().Replace("[", "").Replace("]", "").Replace("\"", ""));
                             }
                             return View("~/Views/Shared/TransactionError.cshtml", errorList);
                         };
@@ -171,6 +168,55 @@ namespace WalletWeb.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Index(string accountNumber, string filter, int page = 1, string sortExpression = "Id")
+        {
+            var result = string.Empty;
+
+            string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
+            string endPoint = _configuration.GetValue<string>("Api:SingleAccountTransactions");
+            int size = _configuration.GetValue<int>("Paging:Size");
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(apiBaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                PaginationViewModel requestPaging = new PaginationViewModel
+                {
+                    currentPage = page,
+                };
+
+                IEnumerable<string> list = new[]
+                {
+                    page.ToString(),
+                    size.ToString()
+                };
+                client.DefaultRequestHeaders.Add("Pagination", list);
+                var response = await client.GetAsync(endPoint + string.Format("/{0}", accountNumber));
+                if (response.IsSuccessStatusCode)
+                {
+                    var pagination = response.Headers.GetValues("Pagination").FirstOrDefault();
+                    PaginationViewModel pageModel = JsonConvert.DeserializeObject<PaginationViewModel>(response.Headers.GetValues("Pagination").FirstOrDefault());
+
+                    var resultMessage = response.Content.ReadAsStringAsync().Result;
+                    result = resultMessage;
+                    IEnumerable<CustomerTransactionViewModel> accounts = JsonConvert.DeserializeObject<IEnumerable<CustomerTransactionViewModel>>(result);
+                    var model = PagingList.Create(accounts, pageModel.itemsPerPage, pageModel.currentPage, pageModel.totalItems, sortExpression, "Id");
+                    model.RouteValue = new RouteValueDictionary {
+                        { "filter", filter}                    };
+                    return View(model);
+                }
+                else if ((int)response.StatusCode == 401)
+                {
+                    HttpContext.Session.Remove("Token");
+                    return RedirectToAction("login", "account", new { area = "" });
+                }
+            }
+            return null;
         }
     }
 }

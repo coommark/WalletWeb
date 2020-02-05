@@ -12,5 +12,6 @@ namespace WalletWeb.Models.ViewModels
         public decimal Balance { get; set; } = 0.0m;
         public UsersViewModel ApplicationUser { get; set; }
         public AccountTypeViewModel AccountType { get; set; }
+        public CustomerAccountStatusViewModel AccountStatus { get; set; }
     }
 }

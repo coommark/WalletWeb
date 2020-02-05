@@ -1,13 +1,108 @@
-﻿
+﻿@model ReflectionIT.Mvc.Paging.PagingList<WalletWeb.Models.ViewModels.UsersViewModel>
+@using ReflectionIT.Mvc.Paging
+@addTagHelper *, ReflectionIT.Mvc.Paging
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Index";
 }
 
 <div class="main-content">
-    <div class="breadcrumb">
-        <h1>Users</h1>
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">Users</h5>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.Count() == 0)
+                    {
+                        <div class="alert alert-info">
+                            No records found
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+
+                            <form method="get" class="form-inline mb-4">
+                                <input name="filter" class="form-control" placeholder="Search"
+                                       value="@Model.RouteValue["Filter"]" />
+                                <button type="submit" class="ml-3 btn btn-primary">
+                                    <i class="ti-search"></i> Search
+                                </button>
+                            </form>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.Id)
+                                        </th>
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.UserName)
+                                        </th>
+
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.FirstName)
+                                        </th>
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.LastName)
+                                        </th>
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.RegisterDate)
+                                        </th>
+                                        <th scope="col">
+                                            @Html.SortableHeaderFor(model => model.LastLogin)
+                                        </th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Id)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.UserName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.FirstName)
+                                        </td>
+
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LastName)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.RegisterDate)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.LastLogin)
+                                        </td>
+                                        <td>
+                                            <a href="@Url.Action("Details", "UserManagement", new { id = item.Id })" class="text-success mr-2"><i class="nav-icon i-Eye-Visible font-weight-bold"></i></a>
+                                        </td>
+
+                                    </tr>
+                                    }
+
+
+                                </tbody>
+                            </table>
+                            <nav aria-label="users navigation">
+                                <vc:pager paging-list="@Model" />
+                            </nav>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-

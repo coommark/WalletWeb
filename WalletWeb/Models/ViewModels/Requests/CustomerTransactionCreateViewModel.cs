@@ -15,6 +15,7 @@ namespace WalletWeb.Models.ViewModels.Requests
         public string Flow { get; set; }
         public int CustomerTransactionBatchId { get; set; }
         public string SourceAccount { get; set; }
+        public string DestinationAccount { get; set; }
 
         //Display Only
         public string AccountNumber { get; set; }

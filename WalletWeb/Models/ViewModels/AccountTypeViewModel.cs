@@ -19,9 +19,6 @@ namespace WalletWeb.Models.ViewModels
         [DisplayName("Minimum Balance")]
         public decimal MinimumBalance { get; set; }
 
-        [DisplayName("Allow Overdraw?")]
-        public bool AllowOverdraw { get; set; }
-
         public List<CustomerAccountViewModel> CustomerAccounts { get; set; }
     }
 }

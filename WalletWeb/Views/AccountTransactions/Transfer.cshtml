@@ -13,7 +13,11 @@
                         <i class="i-Financial"></i>
                         <div class="content2">
                             <p class="text-muted mt-2 mb-0"><strong>@((ViewBag.Current as CustomerAccountViewModel).AccountNumber)</strong> (Current Account)</p>
-                            <p class="text-primary text-24 line-height-1 mb-2"> @string.Format("{0:n}", ((ViewBag.Current as CustomerAccountViewModel).Balance))</p>
+                            <p class="text-primary text-24 line-height-1 mb-2">
+                                <a asp-controller="AccountTransactions" asp-action="Index" asp-route-accountNumber="@((ViewBag.Current as CustomerAccountViewModel).AccountNumber)">
+                                    @string.Format("{0:n}", ((ViewBag.Current as CustomerAccountViewModel).Balance))
+                                </a>
+                            </p>
                         </div>
                     </div>
                 </div>

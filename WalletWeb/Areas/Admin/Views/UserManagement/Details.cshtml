@@ -1,0 +1,72 @@
+﻿
+@model WalletWeb.Models.ViewModels.UsersViewModel
+
+@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<div class="main-content">
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">User Details</h5>
+                            </div>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.UserName):</strong> </label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.UserName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.FirstName):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.FirstName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.LastName):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.LastName)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.RegisterDate):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.RegisterDate)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label"><strong>@Html.DisplayNameFor(x => x.LastLogin):</strong></label>
+                                    <div class="col-sm-8 pt-2">
+                                        @Html.DisplayFor(x => x.LastLogin)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

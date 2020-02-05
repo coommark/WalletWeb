@@ -1,9 +1,8 @@
-﻿@model ReflectionIT.Mvc.Paging.PagingList<WalletWeb.Models.ViewModels.CustomerAccountViewModel>
+﻿@model ReflectionIT.Mvc.Paging.PagingList<WalletWeb.Models.ViewModels.CustomerTransactionViewModel>
 @using ReflectionIT.Mvc.Paging
 @addTagHelper *, ReflectionIT.Mvc.Paging
 
 @{
-    Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Index";
 }
 
@@ -15,12 +14,9 @@
                     <div class="row" style="align-items: center;">
                         <div class="col-md-6">
                             <div class="ul-card-widget__head-label">
-                                <h5 class="text-18 font-weight-700 card-title">Customer Accounts</h5>
+                                <h5 class="text-18 font-weight-700 card-title">Account Transactions</h5>
                             </div>
-                        </div>
-                        <div class="text-right col-md-6">
-                            <a href="@Url.Action("Create", "CustomerAccountsManagement")" class="btn btn-outline-primary" type="button">Create New</a>
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 <div class="card-body">
@@ -48,24 +44,24 @@
                                             @Html.SortableHeaderFor(model => model.Id)
                                         </th>
                                         <th scope="col">
-                                            @Html.SortableHeaderFor(model => model.ApplicationUser.FullName)
+                                            @Html.SortableHeaderFor(model => model.AccountName)
                                         </th>
                                         <th scope="col">
-                                            @Html.SortableHeaderFor(model => model.AccountNumber)
+                                            @Html.SortableHeaderFor(model => model.CustomerAccount.AccountNumber)
                                         </th>
                                         <th scope="col">
-                                            Balance
+                                            @Html.SortableHeaderFor(model => model.Debit)
                                         </th>
                                         <th scope="col">
-                                            @Html.SortableHeaderFor(model => model.AccountStatus.Status)
+                                            @Html.SortableHeaderFor(model => model.Credit)
                                         </th>
                                         <th scope="col">
-                                            @Html.SortableHeaderFor(model => model.DailyTransactionLimit)
+                                            @Html.SortableHeaderFor(model => model.Description)
                                         </th>
                                         <th scope="col">
                                             @Html.SortableHeaderFor(model => model.Created)
                                         </th>
-                                        <th scope="col">Actions</th>
+                                        
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,35 +72,25 @@
                                             @Html.DisplayFor(modelItem => item.Id)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.ApplicationUser.FullName)
+                                            @Html.DisplayFor(modelItem => item.AccountName)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.AccountNumber)
+                                            @Html.DisplayFor(modelItem => item.CustomerAccount.AccountNumber)
                                         </td>
                                         <td>
-                                            @if (item.Balance < 0)
-                                            {
-                                                <span class="text-danger">@string.Format("{0:n}", item.Balance)</span>
-                                            }
-                                            else
-                                            {
-                                                @string.Format("{0:n}", item.Balance)
-                                            }
-
+                                            @string.Format("{0:n}", item.Debit)
                                         </td>
                                         <td>
-                                            @Html.DisplayFor(modelItem => item.AccountStatus.Status)
+                                            @string.Format("{0:n}", item.Credit)
                                         </td>
                                         <td>
-                                            @string.Format("{0:n}", item.DailyTransactionLimit)
+                                            @Html.DisplayFor(modelItem => item.Description)
                                         </td>
 
                                         <td>
-                                            @item.Created.ToString("dd/MM/yyyy")
+                                            @Html.DisplayFor(modelItem => item.Created)
                                         </td>
-                                        <td>
-                                            <a href="@Url.Action("Details", "CustomerAccountsManagement", new { id = item.Id })" class="text-success mr-2"><i class="nav-icon i-Eye-Visible font-weight-bold"></i></a>
-                                        </td>
+                                        
 
                                     </tr>
                                     }

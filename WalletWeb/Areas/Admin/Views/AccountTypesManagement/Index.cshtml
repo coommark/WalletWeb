@@ -56,9 +56,7 @@
                                         <th scope="col">
                                             @Html.SortableHeaderFor(model => model.MinimumBalance)
                                         </th>
-                                        <th scope="col">
-                                            @Html.SortableHeaderFor(model => model.AllowOverdraw)
-                                        </th>
+                                        
                                         <th scope="col">
                                             @Html.SortableHeaderFor(model => model.Created)
                                         </th>
@@ -81,22 +79,12 @@
                                             <td>
                                                 @Html.DisplayFor(modelItem => item.MinimumBalance)
                                             </td>
-                                            <td>
-                                                @if (item.AllowOverdraw == true)
-                                                {
-                                                    <span class="badge badge-primary">Yes</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge badge-info">No</span>
-                                                }
-                                            </td>
+                                            
                                             <td>
                                                 @item.Created.ToString("dd/MM/yyyy")
                                             </td>
                                             <td>
                                                 <a href="@Url.Action("Details", "AccountTypesManagement", new { id = item.Id })" class="text-success mr-2"><i class="nav-icon i-Eye-Visible font-weight-bold"></i></a>
-                                                <a href="@Url.Action("Details", "AccountTypesManagement", new { id = item.Id })" class="text-primary mr-2"><i class="nav-icon i-Pen-2 font-weight-bold"></i></a>
                                             </td>
 
                                         </tr>

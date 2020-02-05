@@ -162,13 +162,107 @@ namespace WalletWeb.Areas.Admin.Controllers
             CustomerAccountViewModel toReturn = JsonConvert.DeserializeObject<CustomerAccountViewModel>(result);
             var transaction = new CustomerTransactionCreateViewModel
             {
-                CustomerId = toReturn.Id,
+                CustomerId = toReturn.ApplicationUser.Id,
                 TransactionType = "Transfer",
                 AccountNumber = toReturn.AccountNumber,
                 FullName = toReturn.ApplicationUser.FullName,
-                Flow = "Destination"
+                Flow = "Destination",
+                DestinationAccount = toReturn.AccountNumber,
             };
             return PartialView("~/Views/Shared/DestinationAccount.cshtml", transaction);
+        }
+
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var result = string.Empty;
+
+            string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
+            string endPoint = _configuration.GetValue<string>("Api:CustomerAccounts");
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Clear();
+                client.BaseAddress = new Uri(apiBaseUrl);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                var response = await client.GetAsync(endPoint + string.Format("/{0}", id));
+                if (response.IsSuccessStatusCode)
+                {
+                    var resultMessage = response.Content.ReadAsStringAsync().Result;
+                    result = resultMessage;
+                }
+                else if ((int)response.StatusCode == 401)
+                {
+                    HttpContext.Session.Remove("Token");
+                    return RedirectToAction("login", "account", new { area = "" });
+                }
+            }
+            CustomerAccountViewModel toReturn = JsonConvert.DeserializeObject<CustomerAccountViewModel>(result);
+            return View(toReturn);
+        }
+
+        public IActionResult SetDailyLimit(int accountId)
+        {
+            AccountUpdateRequestViewModel model = new AccountUpdateRequestViewModel
+            {
+                Id = accountId
+            };
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SetDailyLimit(AccountUpdateRequestViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = string.Empty;
+                string apiBaseUrl = _configuration.GetValue<string>("Api:BaseUrl");
+                string endPoint = _configuration.GetValue<string>("Api:DailyLimit");
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Clear();
+                        client.BaseAddress = new Uri(apiBaseUrl);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", HttpContext.Session.GetString("Token"));
+                        client.DefaultRequestHeaders.Add("Connection", "Keep-Alive");
+                        client.DefaultRequestHeaders.Add("Keep-Alive", "3600");
+
+
+                        var json = JsonConvert.SerializeObject(model);
+                        var data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                        var response = await client.PostAsync(endPoint, data);
+                        if (response.IsSuccessStatusCode)
+                        {
+                            var resultMessage = response.Content.ReadAsStringAsync().Result;
+                            result = resultMessage;
+                            return RedirectToAction("Details", "CustomerAccountsManagement", new { id = model.Id, area = "Admin" });
+                        }
+                        else if (!response.IsSuccessStatusCode)
+                        {
+                            var httpErrorObject = response.Content.ReadAsStringAsync().Result;
+                            string res = await response.Content.ReadAsStringAsync();
+                            var errors = JsonConvert.DeserializeObject<Dictionary<string, object>>(res);
+                            foreach (var error in errors)
+                            {
+                                ModelState.AddModelError(string.Empty, error.Value.ToString().Replace("[", "").Replace("]", "").Replace("\"", ""));
+                            }
+                            return RedirectToAction("Details", "CustomerAccountsManagement", new { id = model.Id, area = "Admin" });
+                        };
+                    };
+                }
+                catch (Exception e)
+                {
+                    return RedirectToAction("Details", "CustomerAccountsManagement", new { id = model.Id, area = "Admin" });
+                }
+            }
+            return View(model);
         }
     }
 }
