@@ -4,7 +4,7 @@
             <li class="nav-item">
                 <a class="nav-item-hold" asp-area="Admin" asp-controller="Home" asp-action="Index"><i class="nav-icon i-Bar-Chart"></i><span class="nav-text">Dashboard</span></a>
                 <div class="triangle"></div>
-            </li>            
+            </li>
             <li class="nav-item" data-item="accounts">
                 <a class="nav-item-hold" href="#"><i class="nav-icon i-Computer-Secure"></i><span class="nav-text">Accounts</span></a>
                 <div class="triangle"></div>
@@ -13,8 +13,16 @@
                 <a class="nav-item-hold" href="#"><i class="nav-icon i-Dollar-Sign-2"></i><span class="nav-text">Transactions</span></a>
                 <div class="triangle"></div>
             </li>
+            <li class="nav-item">
+                <a class="nav-item-hold" asp-area="Admin" asp-controller="MessageManagement" asp-action="Index"><i class="nav-icon i-Envelope"></i><span class="nav-text">Messages</span></a>
+                <div class="triangle"></div>
+            </li>
             <li class="nav-item" data-item="users">
                 <a class="nav-item-hold" href="#"><i class="nav-icon i-MaleFemale"></i><span class="nav-text">Users</span></a>
+                <div class="triangle"></div>
+            </li>
+            <li class="nav-item" data-item="reports">
+                <a class="nav-item-hold" href="#"><i class="nav-icon i-Library"></i><span class="nav-text">Reports</span></a>
                 <div class="triangle"></div>
             </li>
             <li class="nav-item" data-item="settings">
@@ -35,11 +43,12 @@
         <ul class="childNav" data-parent="users">
             <li class="nav-item"><a asp-area="Admin" asp-controller="UserManagement" asp-action="Index"><i class="nav-icon i-MaleFemale"></i><span class="item-name">All Users</span></a></li>
         </ul>
-
+        <ul class="childNav" data-parent="reports">
+            <li class="nav-item"><a asp-area="Admin" asp-controller="Reports" asp-action="TransactionsReport"><i class="nav-icon i-Receipt"></i><span class="item-name">Transactions</span></a></li>
+        </ul>
         <ul class="childNav" data-parent="settings">
             <li class="nav-item"><a asp-area="Admin" asp-controller="AccountTypesManagement" asp-action="Index"><i class="nav-icon i-Receipt-4"></i><span class="item-name">Account Types</span></a></li>
         </ul>
-
     </div>
     <div class="sidebar-overlay"></div>
 </div>

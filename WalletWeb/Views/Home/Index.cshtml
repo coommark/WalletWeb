@@ -1,10 +1,138 @@
-﻿@{
+﻿@model WalletWeb.Models.ViewModels.CustomerDashboardViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="main-content">
     <div class="breadcrumb">
-        <h1>Index Page</h1>        
+        <h1>Customer Dashboard</h1>
     </div>
     <div class="separator-breadcrumb border-top"></div>
+
+    <div class="row">
+        @if (Model.AllAccounts != null && Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Current Account") != null)
+        {
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                    <div class="card-body text-center">
+                        <i class="i-Financial"></i>
+                        <div class="content2">
+                            <p class="text-muted mt-2 mb-0"><strong>@Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Current Account").AccountNumber</strong> (Current Account)</p>
+                            <p class="text-primary text-24 line-height-1 mb-2">
+                                <a asp-controller="AccountTransactions" asp-action="Index" asp-route-accountNumber="@Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Current Account").AccountNumber">
+                                    @string.Format("{0:n}", @Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Current Account").Balance))
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if (Model.AllAccounts != null && Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Savings Account") != null)
+        {
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                    <div class="card-body text-center">
+                        <i class="i-Money-2"></i>
+                        <div class="content2">
+                            <p class="text-muted mt-2 mb-0"><strong>@Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Savings Account").AccountNumber</strong> (Saving Account)</p>
+                            <p class="text-primary text-24 line-height-1 mb-2">
+                                <a asp-controller="AccountTransactions" asp-action="Index" asp-route-accountNumber="@Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Savings Account").AccountNumber">
+                                    @string.Format("{0:n}", @Model.AllAccounts.FirstOrDefault(x => x.AccountType.Type == "Savings Account").Balance))
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row mb-4">
+        <div class="col mb-3">
+            <div class="card text-left">
+                <div class="card-header bg-transparent">
+                    <div class="row" style="align-items: center;">
+                        <div class="col-md-6">
+                            <div class="ul-card-widget__head-label">
+                                <h5 class="text-18 font-weight-700 card-title">Account Transactions</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title mb-3">My Recent Transactions</h4>
+                    @if (Model.RecentTransactions == null || Model.RecentTransactions.Count() == 0)
+                    {
+                        <div class="alert alert-info">
+                            No transactions yet
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            Id
+                                        </th>
+                                        <th scope="col">
+                                            Account Name
+                                        </th>
+                                        <th scope="col">
+                                            Account Number
+                                        </th>
+                                        <th scope="col">
+                                            Debit
+                                        </th>
+                                        <th scope="col">
+                                            Credit
+                                        </th>
+                                        <th scope="col">
+                                            Description
+                                        </th>
+                                        <th scope="col">
+                                            Transaction Date
+                                        </th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.RecentTransactions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AccountName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerAccount.AccountNumber)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:n}", item.Debit)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:n}", item.Credit)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Created)
+                                            </td>
+                                        </tr>
+                                    }
+
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

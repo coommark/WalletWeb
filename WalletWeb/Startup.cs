@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReflectionIT.Mvc.Paging;
+using Rotativa.AspNetCore;
 using WalletWeb.Sessions;
 
 namespace WalletWeb
@@ -21,7 +22,6 @@ namespace WalletWeb
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
@@ -31,7 +31,6 @@ namespace WalletWeb
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });
-            //services.AddTransient<ISessionManager, SessionManager>();
             services.AddMvc()
                  .SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
                 .AddSessionStateTempDataProvider(); 
@@ -42,7 +41,6 @@ namespace WalletWeb
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -57,7 +55,6 @@ namespace WalletWeb
 
             app.UseStaticFiles();
             app.UseSession();
-            //app.UseMiddleware<AuthMiddleware>();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -68,6 +65,8 @@ namespace WalletWeb
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
+            RotativaConfiguration.Setup(env);
         }
     }
 }

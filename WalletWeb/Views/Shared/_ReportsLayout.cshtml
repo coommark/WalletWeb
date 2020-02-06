@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - E-Wallet</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito:300,400,400i,600,700,800,900" rel="stylesheet">
+    <link rel="stylesheet" href="~/assets/css/themes/lite-purple.min.css" />
+    <link rel="stylesheet" href="~/assets/css/plugins/perfect-scrollbar.min.css" />
+</head>
+<body class="text-left">
+    <div class="app-admin-wrap layout-horizontal-bar">
+        <div class="main-content-wrap d-flex flex-column">
+            @RenderBody()            
+        </div>
+
+    </div>
+    <script src="~/assets/js/plugins/jquery-3.3.1.min.js"></script>
+    <script src="~/assets/js/plugins/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/plugins/perfect-scrollbar.min.js"></script>
+    <script src="~/assets/js/scripts/script.min.js"></script>
+    <script src="~/assets/js/scripts/sidebar.horizontal.script.js"></script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<WalletWeb.Models.ViewModels.CustomerTransactionViewModel>
+@{
+    Layout = "~/Views/Shared/_ReportsLayout.cshtml";
+    ViewData["Title"] = "Set Status";
+}
+
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Periodic Transactions Report</title>
+</head>
+<body>
+    <div class="main-content">
+        <div class="breadcrumb">
+            <h1>Periodic Transactions Report</h1>            
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.AccountName)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.CustomerAccount.AccountNumber)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Debit)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Credit)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Description)
+                    </th>
+                    <th scope="col">
+                        @Html.DisplayNameFor(model => model.Created)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AccountName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.CustomerAccount.AccountNumber)
+                        </td>
+                        <td>
+                            @string.Format("{0:n}", item.Debit)
+                        </td>
+                        <td>
+                            @string.Format("{0:n}", item.Credit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Created)
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

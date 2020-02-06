@@ -143,5 +143,15 @@ namespace WalletWeb.Controllers
             }
             return View(model);
         }
+
+        [HttpGet]
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.GetString("Token") != null)
+            {
+                HttpContext.Session.Remove("Token");
+            }
+            return RedirectToAction("Login", "Account", new { area = "" });
+        }
     }
 }

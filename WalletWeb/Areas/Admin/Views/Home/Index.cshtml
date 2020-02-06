@@ -1,11 +1,146 @@
-﻿
+﻿@model WalletWeb.Models.ViewModels.AdminDashboardViewModel
+
 @{
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     ViewData["Title"] = "Index";
 }
 
 <div class="main-content">
+
     <div class="breadcrumb">
-        <h1>Admin Dashboard</h1>
+        <h1 class="mr-2">Admin Dashboard</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <a asp-area="Admin" asp-controller="CustomerTransactionManagement" asp-action="Index">
+                    <div class="card-body text-center">
+                        <i class="i-Money-2"></i>
+                        <div class="content">
+                            <p class="text-muted mt-2 mb-0">Transactions</p>
+                            <p class="lead text-primary text-24 mb-2">@Model.AllTransactionsCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <a asp-area="Admin" asp-controller="CustomerAccountsManagement" asp-action="Index">
+                    <div class="card-body text-center">
+                        <i class="i-Financial"></i>
+                        <div class="content">
+                            <p class="text-muted mt-2 mb-0">Accounts</p>
+                            <p class="lead text-primary text-24 mb-2">@Model.AllAccountsCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
+                    <div class="card-body text-center">
+                        <i class="i-MaleFemale"></i>
+                        <div class="content">
+                            <p class="text-muted mt-2 mb-0">Users</p>
+                            <p class="lead text-primary text-24 mb-2">@Model.AllAUsersCount</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Envelope"></i>
+                    <div class="content">
+                        <p class="text-muted mt-2 mb-0">Messages</p>
+                        <p class="lead text-primary text-24 mb-2">@Model.AllMessagesCount</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 mb-3">
+            <div class="card text-left">
+                <div class="card-body">
+                    <h4 class="card-title mb-3">Recent Customer Transactions</h4>
+                    @if (Model.RecentTransactions == null || Model.RecentTransactions.Count() == 0)
+                    {
+                        <div class="alert alert-info">
+                            No transactions yet
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">
+                                            Id
+                                        </th>
+                                        <th scope="col">
+                                            Account Name
+                                        </th>
+                                        <th scope="col">
+                                           Account Number
+                                        </th>
+                                        <th scope="col">
+                                           Debit
+                                        </th>
+                                        <th scope="col">
+                                            Credit
+                                        </th>
+                                        <th scope="col">
+                                           Description
+                                        </th>
+                                        <th scope="col">
+                                          Transaction Date
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.RecentTransactions)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Id)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.AccountName)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.CustomerAccount.AccountNumber)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:n}", item.Debit)
+                                            </td>
+                                            <td>
+                                                @string.Format("{0:n}", item.Credit)
+                                            </td>
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+
+                                            <td>
+                                                @Html.DisplayFor(modelItem => item.Created)
+                                            </td>
+
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+                            </table>                           
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
