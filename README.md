@@ -43,4 +43,4 @@ http://localhost:<port>
 
 Remember to replace `<port>` with the appropriate port number where the application is running.
 
-Please note that this repository is designed to work in conjunction with the WalletApi. Ensure that the WalletApi is running and accessible before using the WalletWeb application.
+Please note that this repository is designed to work in conjunction with the WalletApi. Ensure that the [WalletApi](https://github.com/coommark/WalletApi) is running and accessible before using the WalletWeb application.
